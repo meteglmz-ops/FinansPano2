@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --font-family: 'Inter', sans-serif;
+    --bg-gradient-start: #161a25;
+    --bg-gradient-end: #1e293b;
+    --sidebar-bg: #1f2937;
+    --card-bg: #334155;
+    --card-bg-light: #475569;
+    --card-border: #475569;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --accent-glow: rgba(59, 130, 246, 0.5);
+
+    --color-green: #10b981;
+    --color-red: #ef4444;
+    --color-blue: #3b82f6;
+    --color-orange: #f97316;
+    --color-purple: #8b5cf6;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: var(--font-family);
+    background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+.dashboard-container { display: flex; width: 100vw; height: 100vh; }
+.page { width: 100%; height: 100%; }
+.page.hidden, .hidden { display: none !important; }
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 250px;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--card-border);
+    padding: 25px 15px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+.logo h2 { text-align: center; margin-bottom: 30px; font-weight: 600; letter-spacing: 1px; }
+.menu ul li a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+.menu ul li.active a, .menu ul li a:hover {
+    background: var(--color-blue);
+    color: var(--text-primary);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+.menu ul li a i { width: 20px; text-align: center; }
+
+.accounts-section { margin-top: auto; }
+.accounts-section h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    padding: 0 15px;
+    margin-bottom: 10px;
+}
+.accounts-section ul { list-style: none; }
+.accounts-section li a {
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    transition: background-color 0.3s ease;
+}
+.accounts-section li.active a, .accounts-section li a:hover { background-color: var(--card-bg); }
+.accounts-section .account-name { font-weight: 500; color: var(--text-primary); }
+.accounts-section .account-balance { font-weight: 500; color: var(--text-secondary); }
+
+/* --- Main Content --- */
+.content-wrapper { flex-grow: 1; height: 100vh; overflow-y: auto; }
+.main-content { padding: 30px 40px; }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.page-header h1 { font-size: 2rem; font-weight: 700; }
+.summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-bottom: 30px; }
+.card { background: var(--card-bg); padding: 25px; border-radius: 12px; }
+.card h3 { font-size: 1rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 10px; }
+.card p { font-size: 1.75rem; font-weight: 600; }
+#total-income, .income-text { color: var(--color-green); }
+#total-expense, .expense-text { color: var(--color-red); }
+
+/* Content Blocks & History */
+.content-blocks { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
+.chart-block, .form-block, .transaction-history, .full-transaction-list { background: var(--card-bg); padding: 25px; border-radius: 12px; }
+.chart-block h3, .transaction-history h3, .form-block h3, .full-transaction-list h3 { font-size: 1.2rem; margin-bottom: 20px; font-weight: 500; border-bottom: 1px solid var(--card-border); padding-bottom: 15px; }
+#expense-chart { max-height: 250px; }
+.transaction-history ul, #full-transaction-list-ul { list-style: none; max-height: 300px; overflow-y: auto; }
+.transaction-history li, #full-transaction-list-ul li { display: flex; justify-content: space-between; align-items: center; padding: 15px 10px; border-bottom: 1px solid var(--card-border); transition: background-color 0.2s; }
+.transaction-history li:hover, #full-transaction-list-ul li:hover { background-color: var(--card-bg-light); }
+.transaction-history li:last-child { border-bottom: none; }
+.transaction-info .description, #full-transaction-list-ul .description { font-weight: 500; }
+.transaction-info .category, #full-transaction-list-ul .category { font-size: 0.8rem; color: var(--text-secondary); background: var(--bg-gradient-end); padding: 3px 8px; border-radius: 10px; align-self: flex-start; margin-top: 5px; }
+.transaction-details { display: flex; align-items: center; gap: 15px; }
+.transaction-amount { font-weight: 600; }
+.action-btns button { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1rem; transition: color 0.3s; }
+.action-btns button:hover { color: var(--text-primary); }
+
+/* Forms & Buttons */
+.form-control { margin-bottom: 15px; }
+.form-control label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-secondary); }
+.form-control input, .form-control select { width: 100%; padding: 12px; background-color: var(--bg-gradient-end); border: 1px solid var(--card-border); border-radius: 8px; color: var(--text-primary); font-size: 0.9rem; }
+.btn { padding: 12px 20px; border: none; background: var(--color-blue); color: white; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
+.btn:hover { background-color: #2563eb; box-shadow: 0 0 15px var(--accent-glow); }
+.btn-secondary { background: var(--card-bg-light); }
+.btn-danger { background-color: var(--color-red); }
+.btn-danger:hover { background-color: #c82333; }
+.btn i { margin-right: 8px; }
+
+/* Modal */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 1000; display: flex; justify-content: center; align-items: center; }
+.modal-content { background: var(--card-bg); padding: 30px; border-radius: 12px; width: 450px; position: relative; border: 1px solid var(--card-border); }
+.modal-close-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; color: var(--text-secondary); font-size: 1.5rem; cursor: pointer; }
+.modal-content h3 { margin-bottom: 25px; }
+
+/* Toast Notifications */
+#toast-container { position: fixed; top: 20px; right: 20px; z-index: 2000; }
+.toast { background: var(--card-bg); color: var(--text-primary); padding: 15px 20px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid; transition: all 0.5s ease-out; opacity: 0; transform: translateX(100%); animation: slideIn 0.5s forwards; }
+.toast.success { border-color: var(--color-green); }
+.toast.error { border-color: var(--color-red); }
+@keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+
+/* Filters */
+.filters { display: flex; gap: 15px; margin-bottom: 20px; }
+.filters input, .filters select { flex-grow: 1; }
+
+/* Empty States */
+.empty-state { text-align: center; padding: 40px; color: var(--text-secondary); }
+
+/* Settings Page Specifics */
+.category-list-container h4 { margin-top: 20px; margin-bottom: 10px; color: var(--text-secondary); font-weight: 500; }
+.category-list-container ul { list-style: none; }
+.category-list-container li { display: flex; justify-content: space-between; align-items: center; background: var(--bg-gradient-end); padding: 10px; border-radius: 5px; margin-bottom: 8px; }
+.category-list-container .delete-btn { background: none; border: none; color: var(--color-red); cursor: pointer; font-size: 1rem; }
+
+/* Flatpickr Custom Theme */
+.flatpickr-calendar { background: var(--card-bg); border-color: var(--card-border); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+.flatpickr-day { color: var(--text-primary); }
+.flatpickr-day:hover { background: var(--card-bg-light); }
+.flatpickr-day.selected { background: var(--color-blue); border-color: var(--color-blue); }
+.flatpickr-month, .flatpickr-weekday, .flatpickr-current-month, .numInput { color: var(--text-primary); }
+span.flatpickr-weekday { color: var(--text-secondary); }
+.flatpickr-time input { color: var(--text-primary); }

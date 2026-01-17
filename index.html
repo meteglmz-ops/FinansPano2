@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinansPano v2.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="manifest" href="manifest.json">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+    <div id="toast-container"></div>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo"><h2>FinansPano</h2></div>
+            <nav class="menu">
+                <ul id="main-menu">
+                    <li class="active" data-page="pano"><a href="#"><i class="fas fa-tachometer-alt"></i> Pano</a></li>
+                    <li data-page="islemler"><a href="#"><i class="fas fa-exchange-alt"></i> İşlemler</a></li>
+                    <li data-page="raporlar"><a href="#"><i class="fas fa-chart-pie"></i> Raporlar</a></li>
+                    <li data-page="ayarlar"><a href="#"><i class="fas fa-cog"></i> Ayarlar</a></li>
+                </ul>
+            </nav>
+            <div class="accounts-section">
+                <h3>Hesaplar</h3>
+                <ul id="account-list">
+                    <!-- JS ile doldurulacak -->
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <!-- Dashboard Page -->
+            <div id="pano" class="page active">
+                <main class="main-content">
+                    <header class="page-header">
+                        <h1>Genel Bakış</h1>
+                        <button id="add-transaction-btn" class="btn"><i class="fas fa-plus"></i> Yeni İşlem</button>
+                    </header>
+                    <div id="dashboard-summary-cards" class="summary-cards"></div>
+                    <div class="content-blocks">
+                        <div class="chart-block">
+                            <h3>Harcama Dağılımı</h3>
+                            <canvas id="expense-chart"></canvas>
+                             <div class="empty-state hidden" id="chart-empty-state"><p>Grafik için yeterli veri yok.</p></div>
+                        </div>
+                        <div class="transaction-history">
+                            <h3>Son İşlemler</h3>
+                            <ul id="transaction-list"></ul>
+                             <div class="empty-state" id="pano-empty-state"><p>Henüz işlem yok.</p></div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            <!-- Transactions Page -->
+            <div id="islemler" class="page hidden">
+                 <main class="main-content">
+                    <header><h1>İşlem Geçmişi</h1></header>
+                    <div class="full-transaction-list">
+                        <div class="filters">
+                            <input type="text" id="search-input" placeholder="Açıklamada ara...">
+                            <select id="filter-type"><option value="all">Tümü</option><option value="income">Gelir</option><option value="expense">Gider</option></select>
+                            <select id="filter-category"></select>
+                            <select id="filter-account"></select>
+                        </div>
+                        <ul id="full-transaction-list-ul"></ul>
+                        <div class="empty-state" id="islemler-empty-state"><p>Filtre ile eşleşen işlem bulunamadı.</p></div>
+                    </div>
+                </main>
+            </div>
+
+            <!-- Reports Page -->
+            <div id="raporlar" class="page hidden">
+                <main class="main-content">
+                    <header><h1>Raporlar</h1></header>
+                     <div class="form-block">
+                        <h3>Özelleştirilmiş Rapor</h3>
+                        <div class="filters">
+                             <input type="text" id="report-datepicker" placeholder="Tarih Aralığı Seçin">
+                             <button id="generate-report-btn" class="btn">Rapor Oluştur</button>
+                             <button id="export-csv-btn" class="btn btn-secondary hidden"><i class="fas fa-download"></i> CSV İndir</button>
+                        </div>
+                        <div id="report-summary" class="summary-cards" style="margin-top: 20px;"></div>
+                    </div>
+                </main>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="ayarlar" class="page hidden">
+                <main class="main-content">
+                    <header><h1>Ayarlar</h1></header>
+                    <div class="content-blocks">
+                        <div class="form-block">
+                            <h3>Kategori Yönetimi</h3>
+                            <form id="add-category-form">
+                                <input type="text" id="new-category-name" placeholder="Yeni kategori adı" required>
+                                <select id="new-category-type"><option value="income">Gelir</option><option value="expense">Gider</option></select>
+                                <button class="btn">Kategori Ekle</button>
+                            </form>
+                            <div class="category-list-container">
+                                <h4>Gelir Kategorileri</h4><ul id="income-category-list"></ul>
+                                <h4>Gider Kategorileri</h4><ul id="expense-category-list"></ul>
+                            </div>
+                        </div>
+                        <div class="form-block">
+                            <h3>Hesap Yönetimi</h3>
+                             <form id="add-account-form">
+                                <input type="text" id="new-account-name" placeholder="Yeni hesap adı" required>
+                                <input type="number" id="new-account-balance" placeholder="Başlangıç bakiyesi" required>
+                                <button class="btn">Hesap Ekle</button>
+                            </form>
+                             <div class="category-list-container">
+                                <h4>Mevcut Hesaplar</h4>
+                                <ul id="settings-account-list"></ul>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="form-block" style="margin-top: 25px;">
+                        <h3>Tehlikeli Alan</h3>
+                        <p>Tüm uygulama verilerini kalıcı olarak silin.</p>
+                        <button id="delete-all-data-btn" class="btn btn-danger">Tüm Verileri Sil</button>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Modal -->
+    <div id="transaction-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close-btn">&times;</button>
+            <h3 id="modal-title">Yeni İşlem</h3>
+            <form id="modal-form">
+                <input type="hidden" id="transaction-id">
+                <div class="form-control">
+                    <label for="modal-description">Açıklama</label>
+                    <input type="text" id="modal-description" required>
+                </div>
+                 <div class="form-control">
+                    <label for="modal-amount">Tutar</label>
+                    <input type="number" id="modal-amount" required>
+                </div>
+                <div class="form-control">
+                    <label for="modal-type">Tip</label>
+                    <select id="modal-type"><option value="income">Gelir</option><option value="expense">Gider</option></select>
+                </div>
+                <div class="form-control">
+                    <label for="modal-category">Kategori</label>
+                    <select id="modal-category" required></select>
+                </div>
+                <div class="form-control">
+                    <label for="modal-account">Hesap</label>
+                    <select id="modal-account" required></select>
+                </div>
+                 <div class="form-control">
+                    <label for="modal-date">Tarih</label>
+                    <input type="text" id="modal-date" required>
+                </div>
+                <button id="modal-submit-btn" class="btn">Kaydet</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
