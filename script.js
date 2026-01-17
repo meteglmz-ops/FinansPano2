@@ -455,6 +455,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
+        // Mobile Menu
+        document.querySelectorAll('.mobile-menu-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelector('.sidebar').classList.add('show');
+                document.getElementById('mobile-overlay').classList.remove('hidden');
+            });
+        });
+
+        document.getElementById('mobile-overlay').addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.remove('show');
+            document.getElementById('mobile-overlay').classList.add('hidden');
+        });
+
         // Transaction Page Filters
         [dom.searchInput, dom.filterType, dom.filterCategory, dom.filterAccount].forEach(el => {
             el.addEventListener('input', renderFullTransactionList);

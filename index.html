@@ -13,6 +13,7 @@
 </head>
 <body>
     <div id="toast-container"></div>
+    <div id="mobile-overlay" class="hidden"></div>
     <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -39,6 +40,7 @@
             <div id="pano" class="page active">
                 <main class="main-content">
                     <header class="page-header">
+                        <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
                         <h1>Genel Bakış</h1>
                         <button id="add-transaction-btn" class="btn"><i class="fas fa-plus"></i> Yeni İşlem</button>
                     </header>
@@ -61,7 +63,10 @@
             <!-- Transactions Page -->
             <div id="islemler" class="page hidden">
                  <main class="main-content">
-                    <header><h1>İşlem Geçmişi</h1></header>
+                    <header class="page-header">
+                        <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+                        <h1>İşlem Geçmişi</h1>
+                    </header>
                     <div class="full-transaction-list">
                         <div class="filters">
                             <input type="text" id="search-input" placeholder="Açıklamada ara...">
@@ -78,7 +83,10 @@
             <!-- Reports Page -->
             <div id="raporlar" class="page hidden">
                 <main class="main-content">
-                    <header><h1>Raporlar</h1></header>
+                    <header class="page-header">
+                        <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+                        <h1>Raporlar</h1>
+                    </header>
                      <div class="form-block">
                         <h3>Özelleştirilmiş Rapor</h3>
                         <div class="filters">
@@ -94,7 +102,10 @@
             <!-- Settings Page -->
             <div id="ayarlar" class="page hidden">
                 <main class="main-content">
-                    <header><h1>Ayarlar</h1></header>
+                    <header class="page-header">
+                        <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+                        <h1>Ayarlar</h1>
+                    </header>
                     <div class="content-blocks">
                         <div class="form-block">
                             <h3>Kategori Yönetimi</h3>
@@ -128,8 +139,6 @@
                     </div>
                 </main>
             </div>
-        </div>
-    </div>
 
     <!-- Transaction Modal -->
     <div id="transaction-modal" class="modal-overlay hidden">
